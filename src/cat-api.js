@@ -3,13 +3,10 @@
 // axios.defaults.headers.common['x-api-key'] =
 //   'live_mye044TqDGd7C2kKYclUMX2fGyrdn4mufug3Nw2qAIdAiNI07c5VLd8fYptvXDPT';
 
-
-
-import { elem } from "./refs";
+import { elem } from './refs';
 import Notiflix from 'notiflix';
 
-
-const {selectEl, errorEl, loaderEl ,loaderTextEl} = elem;
+const { selectEl, errorEl, loaderEl, loaderTextEl } = elem;
 
 const refs = {
   BASE_URL: 'https://api.thecatapi.com/v1',
@@ -20,21 +17,21 @@ const refs = {
 };
 
 export function fetchBreeds() {
-  return fetch(`${refs.BASE_URL}${refs.END_POINT}?${refs.API_KEY}`).then(
-    resp => {
+  return fetch(`${refs.BASE_URL}${refs.END_POINT}?${refs.API_KEY}`)
+    .then(resp => {
       if (!resp.ok) {
         throw new Error(resp.statusText);
       }
       return resp.json();
-    }
-  ).catch(error => {
-    loaderEl.classList.add('visually-hidden');
-    loaderTextEl.classList.add('visually-hidden');
-    selectEl.classList.add('visually-hidden');
-    errorEl.classList.remove('visually-hidden');
+    })
+    .catch(error => {
+      loaderEl.classList.add('visually-hidden');
+      loaderTextEl.classList.add('visually-hidden');
+      selectEl.classList.add('visually-hidden');
+      errorEl.classList.remove('visually-hidden');
 
-    Notiflix.Notify.failure(errorEl.textContent);
-  });
+      Notiflix.Notify.failure(errorEl.textContent);
+    });
 }
 
 export function fetchCatByBreed(breedId) {
@@ -46,25 +43,29 @@ export function fetchCatByBreed(breedId) {
         throw new Error(responce.status);
       }
       return resp.json();
-    }).catch(error => {
+    })
+    .catch(error => {
       selectEl.classList.add('visually-hidden');
       errorEl.classList.remove('visually-hidden');
-  
+      loaderEl.classList.add('visually-hidden');
+      loaderTextEl.classList.add('visually-hidden');
+
       Notiflix.Notify.failure(errorEl.textContent);
     });
-    
 }
 
 export function fetchCat(id) {
-  return fetch(`${refs.BASE_URL}/images/${id}`).then(resp => {
-    if (!resp.ok) {
-      throw new Error(responce.status);
-    }
-    return resp.json();
-  }).catch(error => {
-    selectEl.classList.add('visually-hidden');
-    errorEl.classList.remove('visually-hidden');
+  return fetch(`${refs.BASE_URL}/images/${id}`)
+    .then(resp => {
+      if (!resp.ok) {
+        throw new Error(responce.status);
+      }
+      return resp.json();
+    })
+    .catch(error => {
+      selectEl.classList.add('visually-hidden');
+      errorEl.classList.remove('visually-hidden');
 
-    Notiflix.Notify.failure(errorEl.textContent);
-  });
+      Notiflix.Notify.failure(errorEl.textContent);
+    });
 }

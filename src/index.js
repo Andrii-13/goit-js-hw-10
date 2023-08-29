@@ -1,17 +1,12 @@
 import { fetchBreeds, fetchCatByBreed, fetchCat } from './cat-api';
 import { elem } from './refs';
 
-// import SlimSelect from 'slim-select'
-// import 'slim-select/dist/slimselect.css';
+import SlimSelect from 'slim-select'
+import 'slim-select/dist/slimselect.css';
 
 const { selectEl, catInfo, loaderEl ,loaderTextEl} = elem;
 
-// new SlimSelect({
-//     select: selectEl,
-//     settings: {
-//       openPosition: 'auto' // 'auto', 'up' or 'down'
-//     }
-//   })
+
 
 selectEl.classList.add('visually-hidden');
 loaderEl.classList.remove('visually-hidden');
@@ -28,6 +23,12 @@ function createMarkup(arr) {
     )
     .join('');
   selectEl.insertAdjacentHTML('beforeend', optionEl);
+  new SlimSelect({
+    select: selectEl,
+    settings: {
+      openPosition: 'auto' // 'auto', 'up' or 'down'
+    }
+  })
   selectEl.classList.remove('visually-hidden');
   loaderEl.classList.add('visually-hidden');
   loaderTextEl.classList.add('visually-hidden');
