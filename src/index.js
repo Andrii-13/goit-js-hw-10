@@ -1,9 +1,21 @@
 import { fetchBreeds, fetchCatByBreed, fetchCat } from './cat-api';
+import { elem } from './refs';
 
-const selectEl = document.querySelector('.breed-select');
-const catInfo = document.querySelector('.cat-info');
+// import SlimSelect from 'slim-select'
+// import 'slim-select/dist/slimselect.css';
 
-// console.log(selectEl);
+const { selectEl, catInfo, loaderEl ,loaderTextEl} = elem;
+
+// new SlimSelect({
+//     select: selectEl,
+//     settings: {
+//       openPosition: 'auto' // 'auto', 'up' or 'down'
+//     }
+//   })
+
+selectEl.classList.add('visually-hidden');
+loaderEl.classList.remove('visually-hidden');
+loaderTextEl.classList.remove('visually-hidden');
 
 fetchBreeds().then(resp => {
   createMarkup(resp);
@@ -16,16 +28,26 @@ function createMarkup(arr) {
     )
     .join('');
   selectEl.insertAdjacentHTML('beforeend', optionEl);
+  selectEl.classList.remove('visually-hidden');
+  loaderEl.classList.add('visually-hidden');
+  loaderTextEl.classList.add('visually-hidden');
 }
 
 selectEl.addEventListener('change', handlerCat);
 
 function handlerCat(e) {
+  loaderEl.classList.remove('visually-hidden');
+  loaderTextEl.classList.remove('visually-hidden');
+  catInfo.classList.add('visually-hidden')
   fetchCatByBreed(e.target.value).then(data =>
     data.map(({ id }) => {
-      fetchCat(id).then(
-        value => (catInfo.innerHTML = createMurkupInstanceCat(value))
-      );
+      fetchCat(id)
+        .then(value => (catInfo.innerHTML = createMurkupInstanceCat(value)))
+        .finally(() => {
+          loaderEl.classList.add('visually-hidden');
+          loaderTextEl.classList.add('visually-hidden');
+          catInfo.classList.remove('visually-hidden');
+        });
     })
   );
 }
